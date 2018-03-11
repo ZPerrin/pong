@@ -4,8 +4,10 @@ import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.zperrin.pong.Entity.Ball;
 import com.zperrin.pong.Entity.Paddle;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,6 +15,9 @@ public class Pong extends ApplicationAdapter {
 
     private ShapeRenderer renderer;
     private List<Paddle> players = new ArrayList();
+    private Ball ball;
+
+    private static Dimension dimension = new Dimension(500, 500);
 
 
     @Override
@@ -21,13 +26,11 @@ public class Pong extends ApplicationAdapter {
         renderer = new ShapeRenderer();
         renderer.setAutoShapeType(true);
 
+
         // entities
-        players.add(new Paddle(0, 500 / 2, 10, 50)
-                .setPlayer(1)
-                .setRenderer(renderer));
-        players.add(new Paddle(500 - 10, 500 / 2, 10, 50)
-                .setPlayer(2)
-                .setRenderer(renderer));
+        players.add(new Paddle(renderer, 1));
+        players.add(new Paddle(renderer, 2));
+        ball = new Ball(renderer);
 
         Gdx.gl.glClearColor(0, 0, 0, 1);
     }
@@ -43,6 +46,8 @@ public class Pong extends ApplicationAdapter {
         for (Paddle player : players) {
             player.render();
         }
+        ball.render();
+
         renderer.end();
     }
 
@@ -52,5 +57,6 @@ public class Pong extends ApplicationAdapter {
         for (Paddle player : players) {
             player.dispose();
         }
+        ball.dispose();
     }
 }
