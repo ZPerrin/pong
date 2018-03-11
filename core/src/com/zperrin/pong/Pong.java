@@ -7,7 +7,6 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.zperrin.pong.Entity.Ball;
 import com.zperrin.pong.Entity.Paddle;
 
-import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,8 +15,6 @@ public class Pong extends ApplicationAdapter {
     private ShapeRenderer renderer;
     private List<Paddle> players = new ArrayList();
     private Ball ball;
-
-    private static Dimension dimension = new Dimension(500, 500);
 
 
     @Override
