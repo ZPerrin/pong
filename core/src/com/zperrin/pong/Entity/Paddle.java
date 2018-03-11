@@ -24,7 +24,7 @@ public class Paddle extends Polygon {
         this.renderer = renderer;
         this.player = player;
 
-        if(player == 2) {
+        if(player == 1) {
             this.setPosition(Gdx.graphics.getWidth() - this.getBoundingRectangle().getWidth(), yPos);
         }
     }
@@ -34,24 +34,8 @@ public class Paddle extends Polygon {
         // todo: InputProcessor?
         // bound & scale movement by delta-time
         Rectangle bounds = this.getBoundingRectangle();
+
         if (this.player == 1) {
-            if (Gdx.input.isKeyPressed(Input.Keys.UP)) {
-                this.translate(0, SCALE * Gdx.graphics.getDeltaTime());
-            }
-            if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
-                this.translate(0, -SCALE * Gdx.graphics.getDeltaTime());
-            }
-
-            if (this.getY() > Gdx.graphics.getHeight() - this.getBoundingRectangle().getHeight()) {
-                this.setPosition(0, Gdx.graphics.getHeight() - this.getBoundingRectangle().getHeight());
-            }
-
-            if (this.getY() < 0) {
-                this.setPosition(0, 0);
-            }
-        }
-
-        if (this.player == 2) {
             float xPos = Gdx.graphics.getWidth() - this.getBoundingRectangle().getWidth();
             if (Gdx.input.isKeyPressed(Input.Keys.W)) {
                 this.translate(0, SCALE * Gdx.graphics.getDeltaTime());
@@ -66,6 +50,23 @@ public class Paddle extends Polygon {
 
             if (this.getY() < 0) {
                 this.setPosition(xPos, 0);
+            }
+        }
+
+        if (this.player == 2) {
+            if (Gdx.input.isKeyPressed(Input.Keys.UP)) {
+                this.translate(0, SCALE * Gdx.graphics.getDeltaTime());
+            }
+            if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
+                this.translate(0, -SCALE * Gdx.graphics.getDeltaTime());
+            }
+
+            if (this.getY() > Gdx.graphics.getHeight() - this.getBoundingRectangle().getHeight()) {
+                this.setPosition(0, Gdx.graphics.getHeight() - this.getBoundingRectangle().getHeight());
+            }
+
+            if (this.getY() < 0) {
+                this.setPosition(0, 0);
             }
         }
         renderer.rect(this.getX(), this.getY(), bounds.width, bounds.height);

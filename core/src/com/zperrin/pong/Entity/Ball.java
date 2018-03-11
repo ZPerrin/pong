@@ -29,17 +29,17 @@ public class Ball extends Circle {
 
         // collision logic for paddles
         if (Intersector.overlaps(this, paddleList.get(0).getBoundingRectangle()) || Intersector.overlaps(this, paddleList.get(1).getBoundingRectangle())) {
-            position.add(velocity.scl(-1, 1));
+            setPosition(velocity.scl(-1, 1), true);
         } else {
-            position.add(velocity);
+            setPosition(velocity, false);
         }
 
         // collision logic for top/bottom
         if (position.y + this.radius >= Gdx.graphics.getHeight()) {
-            position.add(velocity.scl(1, -1));
+            setPosition(velocity.scl(1, -1), true);
         }
         if (position.y - this.radius <= 0) {
-            position.add(velocity.scl(1, -1));
+            setPosition(velocity.scl(1, -1), true);
         }
 
         // reset if completely off screen;
@@ -56,15 +56,22 @@ public class Ball extends Circle {
         renderer.circle(position.x, position.y, radius);
     }
 
+    private void setPosition(Vector2 velocity, boolean collision) {
+        if (collision) {
+            // todo: sound
+        }
+        position.add(velocity);
+    }
+
     private void setRandomVelocity() {
         Random r = new Random();
         double x = 1 + r.nextDouble() * (2 - 1);
         double y = 0 + r.nextDouble() * (1 - 0);
         double d = 0 + r.nextDouble() * (1 - 0);
         this.velocity.set((float) x, (float) y);
-        if(d <= .25) {
+        if (d <= .25) {
             this.velocity = velocity.nor().scl(4, 4);
-        } else if (d <= .40){
+        } else if (d <= .40) {
             this.velocity = velocity.nor().scl(-4, 4);
         } else if (d <= .75) {
             this.velocity = velocity.nor().scl(4, -4);
