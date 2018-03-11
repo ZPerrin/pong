@@ -25,7 +25,7 @@ public class Pong extends ApplicationAdapter {
 
         renderer = new ShapeRenderer();
         renderer.setAutoShapeType(true);
-
+        renderer.setColor(1,1,1,1);
 
         // entities
         players.add(new Paddle(renderer, 1));
@@ -46,7 +46,7 @@ public class Pong extends ApplicationAdapter {
         for (Paddle player : players) {
             player.render();
         }
-        ball.render();
+        ball.render(players);
 
         renderer.end();
     }
