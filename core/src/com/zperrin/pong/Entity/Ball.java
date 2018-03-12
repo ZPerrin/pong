@@ -1,6 +1,7 @@
 package com.zperrin.pong.Entity;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.math.Intersector;
@@ -17,10 +18,12 @@ public class Ball extends Circle {
     private ShapeRenderer renderer;
     private Vector2 position = new Vector2(Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2);
     private Vector2 velocity = new Vector2();
+    private Sound blip;
 
     public Ball(ShapeRenderer renderer) {
         super(Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2, 8);
         this.renderer = renderer;
+        this.blip = Gdx.audio.newSound(Gdx.files.internal("pong-blip.wav"));
         setRandomVelocity();
     }
 
@@ -30,22 +33,15 @@ public class Ball extends Circle {
         // collision logic for paddles
         if (Intersector.overlaps(this, paddleList.get(0).getBoundingRectangle()) || Intersector.overlaps(this, paddleList.get(1).getBoundingRectangle())) {
             setPosition(velocity.scl(-1, 1), true);
-        } else {
-            setPosition(velocity, false);
-        }
-
-        // collision logic for top/bottom
-        if (position.y + this.radius >= Gdx.graphics.getHeight()) {
+        } else if (position.y + this.radius >= Gdx.graphics.getHeight()) {
             setPosition(velocity.scl(1, -1), true);
-        }
-        if (position.y - this.radius <= 0) {
+        } else if (position.y - this.radius <= 0) {
             setPosition(velocity.scl(1, -1), true);
-        }
-
-        // reset if completely off screen;
-        if (position.x + this.radius <= 0 || position.x - this.radius >= Gdx.graphics.getWidth()) {
+        } else if (position.x + this.radius <= 0 || position.x - this.radius >= Gdx.graphics.getWidth()) {
             setRandomVelocity();
             position.set(Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2);
+        } else {
+            setPosition(velocity, false);
         }
 
         // update circle position for renderer
@@ -58,7 +54,7 @@ public class Ball extends Circle {
 
     private void setPosition(Vector2 velocity, boolean collision) {
         if (collision) {
-            // todo: sound
+            blip.play();
         }
         position.add(velocity);
     }
@@ -69,15 +65,18 @@ public class Ball extends Circle {
         double y = 0 + r.nextDouble() * (1 - 0);
         double d = 0 + r.nextDouble() * (1 - 0);
         this.velocity.set((float) x, (float) y);
+        this.velocity.nor();
+
         if (d <= .25) {
-            this.velocity = velocity.nor().scl(4, 4);
-        } else if (d <= .40) {
-            this.velocity = velocity.nor().scl(-4, 4);
+            this.velocity = velocity.scl(1, 1);
+        } else if (d <= .45) {
+            this.velocity = velocity.scl(-1, 1);
         } else if (d <= .75) {
-            this.velocity = velocity.nor().scl(4, -4);
+            this.velocity = velocity.scl(1, -1);
         } else {
-            this.velocity = velocity.nor().scl(-4, -4);
+            this.velocity = velocity.scl(-1, -1);
         }
+        this.velocity.scl(4);
     }
 
     public void dispose() {
