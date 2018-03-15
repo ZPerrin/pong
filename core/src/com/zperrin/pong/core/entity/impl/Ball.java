@@ -1,4 +1,4 @@
-package com.zperrin.pong.Entity;
+package com.zperrin.pong.core.entity.impl;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
@@ -6,6 +6,8 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Vector2;
+import com.zperrin.pong.core.entity.IEntity;
+
 
 import java.util.List;
 import java.util.Random;
@@ -13,12 +15,16 @@ import java.util.Random;
 /**
  * Created by zebulonperrin on 3/10/18.
  */
-public class Ball extends Circle {
+public class Ball extends Circle implements IEntity {
 
     private ShapeRenderer renderer;
     private Vector2 position = new Vector2(Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2);
     private Vector2 velocity = new Vector2();
     private Sound blip;
+
+    public Ball() {
+        super(Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2, 8);
+    }
 
     public Ball(ShapeRenderer renderer) {
         super(Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2, 8);
@@ -80,6 +86,16 @@ public class Ball extends Circle {
     }
 
     public void dispose() {
-        this.dispose();
+
+    }
+
+    @Override
+    public void update() {
+
+    }
+
+    @Override
+    public void render() {
+
     }
 }

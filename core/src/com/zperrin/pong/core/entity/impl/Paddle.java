@@ -1,15 +1,16 @@
-package com.zperrin.pong.Entity;
+package com.zperrin.pong.core.entity.impl;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.math.Rectangle;
+import com.zperrin.pong.core.entity.IEntity;
 
 /**
  * Created by Zebulon on 3/8/2018.
  */
-public class Paddle extends Polygon {
+public class Paddle extends Polygon implements IEntity {
 
     private static final float SCALE = 400f;
     private int player;
@@ -27,6 +28,11 @@ public class Paddle extends Polygon {
         if(player == 1) {
             this.setPosition(Gdx.graphics.getWidth() - this.getBoundingRectangle().getWidth(), yPos);
         }
+    }
+
+    @Override
+    public void update() {
+
     }
 
     public void render() {
@@ -73,6 +79,6 @@ public class Paddle extends Polygon {
     }
 
     public void dispose() {
-        this.dispose();
+
     }
 }
