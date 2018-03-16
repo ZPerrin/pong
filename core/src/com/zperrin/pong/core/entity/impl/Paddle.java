@@ -14,33 +14,22 @@ public class Paddle extends Polygon implements IEntity {
 
     private static final float SCALE = 400f;
     private int player;
-    private ShapeRenderer renderer;
 
-
-    public Paddle(ShapeRenderer renderer, int player) {
+    public Paddle(int player) {
         super(new float[]{0f, 0f, 10f, 0f, 10f, 50f, 0f, 50f});
         float yPos = (Gdx.graphics.getHeight() - this.getBoundingRectangle().getHeight()) / 2;
         this.setOrigin(0, 0);
         this.setPosition(0, yPos);
-        this.renderer = renderer;
         this.player = player;
 
-        if(player == 1) {
+        if (player == 1) {
             this.setPosition(Gdx.graphics.getWidth() - this.getBoundingRectangle().getWidth(), yPos);
         }
     }
 
+    // todo: refactor controls
     @Override
-    public void update() {
-
-    }
-
-    public void render() {
-
-        // todo: InputProcessor?
-        // bound & scale movement by delta-time
-        Rectangle bounds = this.getBoundingRectangle();
-
+    public void update(float deltaTime) {
         if (this.player == 1) {
             float xPos = Gdx.graphics.getWidth() - this.getBoundingRectangle().getWidth();
             if (Gdx.input.isKeyPressed(Input.Keys.W)) {
@@ -75,10 +64,15 @@ public class Paddle extends Polygon implements IEntity {
                 this.setPosition(0, 0);
             }
         }
+    }
+
+    @Override
+    public void render(ShapeRenderer renderer) {
+        Rectangle bounds = this.getBoundingRectangle();
         renderer.rect(this.getX(), this.getY(), bounds.width, bounds.height);
     }
 
     public void dispose() {
-
+        //this.dispose();
     }
 }

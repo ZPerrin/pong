@@ -7,9 +7,8 @@ import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Vector2;
 import com.zperrin.pong.core.entity.IEntity;
+import com.zperrin.pong.core.state.PlayState;
 
-
-import java.util.List;
 import java.util.Random;
 
 /**
@@ -17,27 +16,22 @@ import java.util.Random;
  */
 public class Ball extends Circle implements IEntity {
 
-    private ShapeRenderer renderer;
     private Vector2 position = new Vector2(Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2);
     private Vector2 velocity = new Vector2();
-    private Sound blip;
+    private Sound blip = Gdx.audio.newSound(Gdx.files.internal("pong-blip.wav"));
+    private PlayState playState;
 
-    public Ball() {
-        super(Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2, 8);
-    }
-
-    public Ball(ShapeRenderer renderer) {
-        super(Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2, 8);
-        this.renderer = renderer;
-        this.blip = Gdx.audio.newSound(Gdx.files.internal("pong-blip.wav"));
+    public Ball(PlayState playState) {
+        super(Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2, 8); // todo static?
+        this.playState = playState;
         setRandomVelocity();
     }
 
-    public void render(List<Paddle> paddleList) {
-        renderer.setColor(1, 1, 1, 1);
+    @Override
+    public void update(float deltaTime) {
 
         // collision logic for paddles
-        if (Intersector.overlaps(this, paddleList.get(0).getBoundingRectangle()) || Intersector.overlaps(this, paddleList.get(1).getBoundingRectangle())) {
+        if (Intersector.overlaps(this, playState.getPaddles()[0].getBoundingRectangle()) || Intersector.overlaps(this, playState.getPaddles()[1].getBoundingRectangle())) {
             setPosition(velocity.scl(-1, 1), true);
         } else if (position.y + this.radius >= Gdx.graphics.getHeight()) {
             setPosition(velocity.scl(1, -1), true);
@@ -49,12 +43,12 @@ public class Ball extends Circle implements IEntity {
         } else {
             setPosition(velocity, false);
         }
-
-        // update circle position for renderer
         this.x = position.x;
         this.y = position.y;
+    }
 
-
+    @Override
+    public void render(ShapeRenderer renderer) {
         renderer.circle(position.x, position.y, radius);
     }
 
@@ -65,6 +59,7 @@ public class Ball extends Circle implements IEntity {
         position.add(velocity);
     }
 
+    // todo: update this
     private void setRandomVelocity() {
         Random r = new Random();
         double x = 1 + r.nextDouble() * (2 - 1);
@@ -86,16 +81,6 @@ public class Ball extends Circle implements IEntity {
     }
 
     public void dispose() {
-
-    }
-
-    @Override
-    public void update() {
-
-    }
-
-    @Override
-    public void render() {
-
+        //this.dispose();
     }
 }

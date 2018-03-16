@@ -10,4 +10,6 @@ public abstract class State {
     public abstract void update(float deltaTime);
 
     public abstract void render(ShapeRenderer shapeRenderer);
+
+    public abstract void dispose();
 }
