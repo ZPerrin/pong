@@ -14,14 +14,16 @@ public class Paddle extends Polygon implements IEntity {
 
     private static final float SCALE = 400f;
     private int player;
+    private ShapeRenderer renderer;
 
-    public Paddle(int player) {
+    public Paddle(int player, ShapeRenderer renderer) {
 
         super(new float[]{0f, 0f, 10f, 0f, 10f, 50f, 0f, 50f});
         float halfViewPortHeight = (Gdx.graphics.getHeight() - this.getBoundingRectangle().getHeight()) / 2;
         this.setOrigin(0, 0);
         this.setPosition(0, halfViewPortHeight);
         this.player = player;
+        this.renderer = renderer;
 
         if (player == 2) {
             this.setPosition(Gdx.graphics.getWidth() - this.getBoundingRectangle().getWidth(), halfViewPortHeight);
@@ -33,9 +35,11 @@ public class Paddle extends Polygon implements IEntity {
     public void update(float deltaTime) {
 
         if (this.player == 1) {
+
             if (Gdx.input.isKeyPressed(Input.Keys.W)) {
                 this.translate(0, SCALE * Gdx.graphics.getDeltaTime());
             }
+
             if (Gdx.input.isKeyPressed(Input.Keys.S)) {
                 this.translate(0, -SCALE * Gdx.graphics.getDeltaTime());
             }
@@ -50,9 +54,11 @@ public class Paddle extends Polygon implements IEntity {
         }
 
         if (this.player == 2) {
+
             if (Gdx.input.isKeyPressed(Input.Keys.UP)) {
                 this.translate(0, SCALE * Gdx.graphics.getDeltaTime());
             }
+
             if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
                 this.translate(0, -SCALE * Gdx.graphics.getDeltaTime());
             }
@@ -68,7 +74,7 @@ public class Paddle extends Polygon implements IEntity {
     }
 
     @Override
-    public void render(ShapeRenderer renderer) {
+    public void render() {
         Rectangle bounds = this.getBoundingRectangle();
         renderer.rect(this.getX(), this.getY(), bounds.width, bounds.height);
     }

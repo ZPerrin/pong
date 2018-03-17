@@ -1,6 +1,5 @@
 package com.zperrin.pong.core.state.impl;
 
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.zperrin.pong.core.State;
 import com.zperrin.pong.core.entity.impl.Ball;
 import com.zperrin.pong.core.entity.impl.Paddle;
@@ -8,9 +7,9 @@ import com.zperrin.pong.core.entity.impl.Paddle;
 /**
  * Created by zebulonperrin on 3/14/18.
  */
-public class PlayState extends State {
+public class PlayState2D extends State {
 
-    public PlayState(Paddle[] paddles, Ball ball) {
+    public PlayState2D(Paddle[] paddles, Ball ball) {
         super(paddles, ball);
     }
 
@@ -22,10 +21,10 @@ public class PlayState extends State {
     }
 
     @Override
-    public void render(ShapeRenderer shapeRenderer) {
-        paddles[0].render(shapeRenderer);
-        paddles[1].render(shapeRenderer);
-        ball.render(shapeRenderer);
+    public void render() {
+        paddles[0].render();
+        paddles[1].render();
+        ball.render();
     }
 
     public void dispose() {

@@ -1,6 +1,5 @@
 package com.zperrin.pong.core;
 
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.zperrin.pong.core.entity.impl.Ball;
 import com.zperrin.pong.core.entity.impl.Paddle;
 
@@ -19,7 +18,7 @@ public abstract class State {
 
     public abstract void update(float deltaTime);
 
-    public abstract void render(ShapeRenderer shapeRenderer);
+    public abstract void render();
 
     public abstract void dispose();
 }
