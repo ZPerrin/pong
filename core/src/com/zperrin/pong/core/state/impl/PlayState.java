@@ -1,4 +1,4 @@
-package com.zperrin.pong.core.state;
+package com.zperrin.pong.core.state.impl;
 
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.zperrin.pong.core.State;
@@ -10,13 +10,8 @@ import com.zperrin.pong.core.entity.impl.Paddle;
  */
 public class PlayState extends State {
 
-    private Paddle[] paddles = new Paddle[2];
-    private Ball ball;
-
-    public PlayState() {
-        paddles[0] = new Paddle(1);
-        paddles[1] = new Paddle(2);
-        ball = new Ball(this);
+    public PlayState(Paddle[] paddles, Ball ball) {
+        super(paddles, ball);
     }
 
     @Override

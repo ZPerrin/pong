@@ -16,22 +16,23 @@ public class Paddle extends Polygon implements IEntity {
     private int player;
 
     public Paddle(int player) {
+
         super(new float[]{0f, 0f, 10f, 0f, 10f, 50f, 0f, 50f});
-        float yPos = (Gdx.graphics.getHeight() - this.getBoundingRectangle().getHeight()) / 2;
+        float halfViewPortHeight = (Gdx.graphics.getHeight() - this.getBoundingRectangle().getHeight()) / 2;
         this.setOrigin(0, 0);
-        this.setPosition(0, yPos);
+        this.setPosition(0, halfViewPortHeight);
         this.player = player;
 
-        if (player == 1) {
-            this.setPosition(Gdx.graphics.getWidth() - this.getBoundingRectangle().getWidth(), yPos);
+        if (player == 2) {
+            this.setPosition(Gdx.graphics.getWidth() - this.getBoundingRectangle().getWidth(), halfViewPortHeight);
         }
     }
 
     // todo: refactor controls
     @Override
     public void update(float deltaTime) {
+
         if (this.player == 1) {
-            float xPos = Gdx.graphics.getWidth() - this.getBoundingRectangle().getWidth();
             if (Gdx.input.isKeyPressed(Input.Keys.W)) {
                 this.translate(0, SCALE * Gdx.graphics.getDeltaTime());
             }
@@ -40,11 +41,11 @@ public class Paddle extends Polygon implements IEntity {
             }
 
             if (this.getY() > Gdx.graphics.getHeight() - this.getBoundingRectangle().getHeight()) {
-                this.setPosition(xPos, Gdx.graphics.getHeight() - this.getBoundingRectangle().getHeight());
+                this.setPosition(getX(), Gdx.graphics.getHeight() - this.getBoundingRectangle().getHeight());
             }
 
             if (this.getY() < 0) {
-                this.setPosition(xPos, 0);
+                this.setPosition(getX(), 0);
             }
         }
 
@@ -57,11 +58,11 @@ public class Paddle extends Polygon implements IEntity {
             }
 
             if (this.getY() > Gdx.graphics.getHeight() - this.getBoundingRectangle().getHeight()) {
-                this.setPosition(0, Gdx.graphics.getHeight() - this.getBoundingRectangle().getHeight());
+                this.setPosition(getX(), Gdx.graphics.getHeight() - this.getBoundingRectangle().getHeight());
             }
 
             if (this.getY() < 0) {
-                this.setPosition(0, 0);
+                this.setPosition(getX(), 0);
             }
         }
     }

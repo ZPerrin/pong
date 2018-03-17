@@ -7,7 +7,6 @@ import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Vector2;
 import com.zperrin.pong.core.entity.IEntity;
-import com.zperrin.pong.core.state.PlayState;
 
 import java.util.Random;
 
@@ -19,19 +18,20 @@ public class Ball extends Circle implements IEntity {
     private Vector2 position = new Vector2(Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2);
     private Vector2 velocity = new Vector2();
     private Sound blip = Gdx.audio.newSound(Gdx.files.internal("pong-blip.wav"));
-    private PlayState playState;
+    private Paddle[] paddles;
 
-    public Ball(PlayState playState) {
+    public Ball(Paddle[] paddles) {
         super(Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2, 8); // todo static?
-        this.playState = playState;
+        this.paddles = paddles;
         setRandomVelocity();
     }
+
 
     @Override
     public void update(float deltaTime) {
 
         // collision logic for paddles
-        if (Intersector.overlaps(this, playState.getPaddles()[0].getBoundingRectangle()) || Intersector.overlaps(this, playState.getPaddles()[1].getBoundingRectangle())) {
+        if (Intersector.overlaps(this, paddles[0].getBoundingRectangle()) || Intersector.overlaps(this, paddles[1].getBoundingRectangle())) {
             setPosition(velocity.scl(-1, 1), true);
         } else if (position.y + this.radius >= Gdx.graphics.getHeight()) {
             setPosition(velocity.scl(1, -1), true);
