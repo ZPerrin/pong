@@ -11,10 +11,9 @@ import com.zperrin.pong.core.state.impl.PlayState3D;
 import java.util.Stack;
 
 /**
- * Only one game state should be active, but we can keep multiple states on the stack.
+ * Manage the game states (e.g. 2d vs 3d).  Only one should be rendered at any given time.
  */
 public class GameManager {
-
 
     private ShapeRenderer renderer;
     private Paddle[] paddles = new Paddle[2];
@@ -33,7 +32,7 @@ public class GameManager {
         ball = new Ball(paddles, renderer);
 
         states.push(new PlayState2D(paddles, ball));
-        //states.push(new PlayState3D(paddles, ball));
+        states.push(new PlayState3D(paddles, ball));
     }
 
     public void push(State state) {
