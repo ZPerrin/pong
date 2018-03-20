@@ -1,5 +1,8 @@
 package com.zperrin.pong.core.state.impl;
 
+import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.g3d.ModelBatch;
+import com.zperrin.pong.Pong;
 import com.zperrin.pong.core.State;
 import com.zperrin.pong.core.entity.impl.Ball;
 import com.zperrin.pong.core.entity.impl.Paddle;
@@ -9,8 +12,13 @@ import com.zperrin.pong.core.entity.impl.Paddle;
  */
 public class PlayState2D extends State {
 
-    public PlayState2D(Paddle[] paddles, Ball ball) {
-        super(paddles, ball);
+    private OrthographicCamera camera;
+
+    public PlayState2D(Paddle[] paddles, Ball ball, ModelBatch modelBatch) {
+        super(paddles, ball, modelBatch);
+        camera = new OrthographicCamera(Pong.WIDTH, Pong.HEIGHT);
+        //camera.setToOrtho(false, Pong.WIDTH, Pong.HEIGHT); // if i wanted to set the camera coordinate origin to be at the bottom left of the viewport
+        camera.near = 40;
     }
 
     @Override
@@ -22,9 +30,14 @@ public class PlayState2D extends State {
 
     @Override
     public void render() {
+        modelBatch.begin(camera);
+
         paddles[0].render();
         paddles[1].render();
-        ball.render();
+        //ball.render();
+        ball.render3D();
+
+        modelBatch.end();
     }
 
     public void dispose() {

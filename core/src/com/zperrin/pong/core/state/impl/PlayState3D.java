@@ -22,27 +22,27 @@ public class PlayState3D extends State {
     PerspectiveCamera camera;
     private ModelBatch batch;
     private ModelBuilder builder;
-    private Model box;
+    private Model ball2;
     private ModelInstance modelInstance;
     //private Environment environment;
 
-    public PlayState3D(Paddle[] paddles, Ball ball) {
+    public PlayState3D(Paddle[] paddles, Ball ball, ModelBatch modelBatch) {
 
-        super(paddles, ball);
+        super(paddles, ball, modelBatch);
 
         // todo: tweak these
         camera = new PerspectiveCamera(67f, Pong.WIDTH, Pong.HEIGHT);
-        camera.position.set(10f, 10f, 10f);
-        camera.lookAt(0f, 0f, 0f);
+        camera.position.set(0f, 0f, -10f);
+        camera.lookAt(0f, 0f, 1f);
         camera.near = 0.1f;
         camera.far = 300f;
 
-        batch = new ModelBatch();
+        batch = modelBatch;
         builder = new ModelBuilder();
-        box = builder.createBox(2f, 2f, 2f,
+        ball2 = builder.createBox(2f, 2f, 2f,
                 new Material(ColorAttribute.createDiffuse(Color.WHITE)),
                 VertexAttributes.Usage.Position | VertexAttributes.Usage.Normal);
-        modelInstance = new ModelInstance(box, 0f, 0f, 0f);
+        modelInstance = new ModelInstance(ball2, 0f, 0f, 0f);
         //environment = new Environment();
         //environment.set(new ColorAttribute(ColorAttribute.AmbientLight, 0.8f, 0.8f, 0.8f, 1f));
 
@@ -54,8 +54,15 @@ public class PlayState3D extends State {
         camera.update();
         if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
             camera.rotateAround(new Vector3(0f, 0f, 0f), new Vector3(0f, 1f, 0f), -1f);
-        } else if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
+        }
+        if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
             camera.rotateAround(new Vector3(0f, 0f, 0f), new Vector3(0f, 1f, 0f), 1f);
+        }
+        if (Gdx.input.isKeyPressed(Input.Keys.UP)) {
+            modelInstance.transform.translate(0f, 0f, 1f);
+        }
+        if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
+            modelInstance.transform.translate(0f, 0f, -1f);
         }
 
     }

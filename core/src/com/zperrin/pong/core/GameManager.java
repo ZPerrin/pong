@@ -2,6 +2,8 @@ package com.zperrin.pong.core;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.g3d.Model;
+import com.badlogic.gdx.graphics.g3d.ModelBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.zperrin.pong.core.entity.impl.Ball;
 import com.zperrin.pong.core.entity.impl.Paddle;
@@ -16,6 +18,7 @@ import java.util.Stack;
 public class GameManager {
 
     private ShapeRenderer renderer;
+    private ModelBatch modelBatch;
     private Paddle[] paddles = new Paddle[2];
     private Ball ball;
 
@@ -27,12 +30,14 @@ public class GameManager {
         renderer.setAutoShapeType(true);
         renderer.setColor(1, 1, 1, 1);
 
-        paddles[0] = new Paddle(1, renderer);
-        paddles[1] = new Paddle(2, renderer);
-        ball = new Ball(paddles, renderer);
+        modelBatch = new ModelBatch();
 
-        states.push(new PlayState2D(paddles, ball));
-        states.push(new PlayState3D(paddles, ball));
+        paddles[0] = new Paddle(1, renderer, modelBatch);
+        paddles[1] = new Paddle(2, renderer, modelBatch);
+        ball = new Ball(paddles, modelBatch);
+
+        states.push(new PlayState2D(paddles, ball, modelBatch));
+       // states.push(new PlayState3D(paddles, ball));
     }
 
     public void push(State state) {
@@ -47,6 +52,9 @@ public class GameManager {
 
         // clear frame
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+
+        // render models
+        // modelBatch.begin(states.peek().render().get);
 
         // render state
         renderer.begin(ShapeRenderer.ShapeType.Filled);
