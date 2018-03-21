@@ -1,10 +1,8 @@
 package com.zperrin.pong.core.entity.impl;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.VertexAttributes;
 import com.badlogic.gdx.graphics.g3d.Material;
 import com.badlogic.gdx.graphics.g3d.Model;
@@ -12,10 +10,6 @@ import com.badlogic.gdx.graphics.g3d.ModelBatch;
 import com.badlogic.gdx.graphics.g3d.ModelInstance;
 import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
 import com.badlogic.gdx.graphics.g3d.utils.ModelBuilder;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.math.Circle;
-import com.badlogic.gdx.math.Intersector;
-import com.badlogic.gdx.math.Quaternion;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.math.collision.BoundingBox;
 import com.zperrin.pong.Pong;
@@ -26,38 +20,32 @@ import java.util.Random;
 /**
  * Created by zebulonperrin on 3/10/18.
  */
-public class Ball extends Circle implements IEntity {
+public class Ball implements IEntity {
 
 
-    private static final Vector3 ZERO_VECTOR = new Vector3(0f, 0f, 0f);
+    private static final float DIAMETER = 16f;
+
     private ModelBatch modelBatch;
     private ModelBuilder modelBuilder = new ModelBuilder(); // todo: refactor?
-    private Model model = modelBuilder.createSphere(16f, 16f, 16f, 10, 10,
+    private Model model = modelBuilder.createSphere(DIAMETER, DIAMETER, DIAMETER, 10, 10,
             new Material(ColorAttribute.createDiffuse(Color.WHITE)),
             VertexAttributes.Usage.Position | VertexAttributes.Usage.Normal);
-
-    // actual model
     private ModelInstance ball;
-    private Vector3 position3D;
+    private Vector3 position = new Vector3();
     private BoundingBox boundingBox;
-    private Vector3 velocity = new Vector3(0f, 0f, 0f);
-
-    private Vector3 position = new Vector3(Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2, 0);
+    private Vector3 velocity = new Vector3();
     private Sound blip = Gdx.audio.newSound(Gdx.files.internal("pong-blip.wav"));
     private Paddle[] paddles;
-    private ShapeRenderer renderer;
 
     public Ball(Paddle[] paddles, ModelBatch modelBatch) {
-        super(Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2, 8); // todo static?
+
         this.paddles = paddles;
-        //this.renderer = renderer;
         this.modelBatch = modelBatch;
 
         // model instantiation
         ball = new ModelInstance(model, 0f, 0f, IEntity.Z_OFFSET_2D);
-        position3D = ball.transform.getTranslation(ZERO_VECTOR);
-        boundingBox = model.calculateBoundingBox(new BoundingBox()).ext(ZERO_VECTOR, 32f);
-        //boundingBox.
+        ball.transform.getTranslation(position);
+        boundingBox = model.calculateBoundingBox(new BoundingBox()).mul(ball.transform);
 
         setRandomVelocity();
     }
@@ -65,69 +53,36 @@ public class Ball extends Circle implements IEntity {
 
     @Override
     public void update(float deltaTime) {
+        // todo: prediction / correction physics
 
+        // current position
+        ball.transform.getTranslation(position);
+        boundingBox.set(boundingBox.min.add(velocity), boundingBox.max.add(velocity));
 
         // collision logic for paddles
-/*        if (Intersector.overlaps(this, paddles[0].getBoundingRectangle()) || Intersector.overlaps(this, paddles[1].getBoundingRectangle())) {
-            setPosition(velocity.scl(-1, 1, 0), true);
-        } else if (position.y + this.radius >= Gdx.graphics.getHeight()) {
-            setPosition(velocity.scl(1, -1, 0), true);
-        } else if (position.y - this.radius <= 0) {
-            setPosition(velocity.scl(1, -1, 0), true);
-        } else if (position.x + this.radius <= 0 || position.x - this.radius >= Gdx.graphics.getWidth()) {
-            setRandomVelocity();
-            position.set(Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2, 0);
-        } else {
-            setPosition(velocity, false);
-        }*/
-
-//        if (Intersector.overlaps(this, paddles[0].getBoundingRectangle()) || Intersector.overlaps(this, paddles[1].getBoundingRectangle())) {
-//            //setPosition(velocity.scl(-1, 1, 0), true);
-//        } else if (position.y + this.radius >= Gdx.graphics.getHeight()) {
-//            //setPosition(velocity.scl(1, -1, 0), true);
-//        } else if (position.y - this.radius <= 0) {
-//            //setPosition(velocity.scl(1, -1, 0), true);
-//        } else if (position.x + this.radius <= 0 || position.x - this.radius >= Gdx.graphics.getWidth()) {
-//            setRandomVelocity();
-//            //position.set(Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2, 0);
-//        } else {
-//            //setPosition(velocity, false);
-//        }
-
-        //position3D = ;
-        //System.out.println(position3D.toString());
-        System.out.println("ball bb before mul: " + boundingBox.getCenter(new Vector3()));
-        boundingBox = new BoundingBox().clr().mul(ball.transform);
-        System.out.println("ball bb after mul: " +boundingBox.getCenter(new Vector3()));
         if (paddles[0].intersects(boundingBox) || paddles[1].intersects(boundingBox)) {
             velocity.scl(-1, 1, 0);
             ball.transform.translate(velocity);
+            blip.play();
         }
-
-/*        if (Intersector.overlaps(this, paddles[0].getBoundingRectangle()) || Intersector.overlaps(this, paddles[1].getBoundingRectangle())) {
-            setPosition(velocity.scl(-1, 1, 0), true);
-            //boundingBox.contains(paddles[0].getB)
-        }*/
-
-        if (position3D.x + boundingBox.getWidth() >= Pong.WIDTH / 2 || position3D.x - boundingBox.getWidth() <= -1 * (Pong.WIDTH / 2)) {
-            ball.transform.setToTranslation(0f, 0f, -16f);
+        // y axis bounds
+        else if (position.y - boundingBox.getHeight() <= -Pong.HEIGHT / 2 || position.y + boundingBox.getHeight() >= Pong.HEIGHT / 2) {
+            velocity.scl(1, -1, 0);
+            ball.transform.translate(velocity);
+            blip.play();
+        }
+        // x axis bounds
+        else if (position.x - boundingBox.getWidth() >= Pong.WIDTH / 2 || position.x + boundingBox.getWidth() <= -Pong.WIDTH / 2) {
+            ball.transform.setToTranslation(0f, 0f, IEntity.Z_OFFSET_2D);
+            boundingBox.clr().mul(ball.transform);
             setRandomVelocity();
-        } else {
-            //System.out.println(velocity.toString());
+        }
+        // regular movement
+        else {
             ball.transform.translate(velocity);
         }
-
-        System.out.println("ball position: " + position3D);
-/*        System.out.println(velocity.toString());
-        ball.transform.translate(velocity);*/
-
-
-        //this.x = position.x;
-        //this.y = position.y;
-
     }
 
-    // TODO: do we need the 3d method?
     @Override
     public void render() {
         modelBatch.render(ball);
@@ -135,14 +90,8 @@ public class Ball extends Circle implements IEntity {
 
     @Override
     public void render3D() {
+        // todo: do i need the 3d method?
         render();
-    }
-
-    private void setPosition(Vector3 velocity, boolean collision) {
-        if (collision) {
-            blip.play();
-        }
-        position.add(velocity);
     }
 
     // todo: update this
@@ -164,7 +113,6 @@ public class Ball extends Circle implements IEntity {
             this.velocity = velocity.scl(-1, -1, 0);
         }
         this.velocity.scl(4);
-        this.velocity = new Vector3(1, 0, 0);
     }
 
     public void dispose() {

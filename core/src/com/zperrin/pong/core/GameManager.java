@@ -2,7 +2,6 @@ package com.zperrin.pong.core;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.g3d.Model;
 import com.badlogic.gdx.graphics.g3d.ModelBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.zperrin.pong.core.entity.impl.Ball;
@@ -32,8 +31,8 @@ public class GameManager {
 
         modelBatch = new ModelBatch();
 
-        paddles[0] = new Paddle(1, renderer, modelBatch);
-        paddles[1] = new Paddle(2, renderer, modelBatch);
+        paddles[0] = new Paddle(1, modelBatch);
+        paddles[1] = new Paddle(2, modelBatch);
         ball = new Ball(paddles, modelBatch);
 
         states.push(new PlayState2D(paddles, ball, modelBatch));
@@ -52,9 +51,6 @@ public class GameManager {
 
         // clear frame
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-
-        // render models
-        // modelBatch.begin(states.peek().render().get);
 
         // render state
         renderer.begin(ShapeRenderer.ShapeType.Filled);

@@ -1,7 +1,6 @@
 package com.zperrin.pong.core.state.impl;
 
 import com.badlogic.gdx.graphics.g3d.ModelBatch;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.zperrin.pong.core.State;
 import com.zperrin.pong.core.entity.impl.Ball;
 import com.zperrin.pong.core.entity.impl.Paddle;

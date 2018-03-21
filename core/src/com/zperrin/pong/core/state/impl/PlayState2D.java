@@ -10,6 +10,7 @@ import com.zperrin.pong.core.entity.impl.Paddle;
 /**
  * Created by zebulonperrin on 3/14/18.
  */
+// todo: is this state even needed? 3D + perspective should be able to fake a 2d representation
 public class PlayState2D extends State {
 
     private OrthographicCamera camera;
@@ -17,7 +18,6 @@ public class PlayState2D extends State {
     public PlayState2D(Paddle[] paddles, Ball ball, ModelBatch modelBatch) {
         super(paddles, ball, modelBatch);
         camera = new OrthographicCamera(Pong.WIDTH, Pong.HEIGHT);
-        //camera.setToOrtho(false, Pong.WIDTH, Pong.HEIGHT); // if i wanted to set the camera coordinate origin to be at the bottom left of the viewport
         camera.near = 40;
     }
 
@@ -34,8 +34,7 @@ public class PlayState2D extends State {
 
         paddles[0].render();
         paddles[1].render();
-        //ball.render();
-        ball.render3D();
+        ball.render();
 
         modelBatch.end();
     }
@@ -44,9 +43,5 @@ public class PlayState2D extends State {
         paddles[0].dispose();
         paddles[1].dispose();
         ball.dispose();
-    }
-
-    public Paddle[] getPaddles() {
-        return paddles;
     }
 }

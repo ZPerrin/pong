@@ -17,6 +17,7 @@ import com.zperrin.pong.core.entity.impl.Paddle;
 /**
  * Created by zebulonperrin on 3/17/18.
  */
+// todo: pong 3d version
 public class PlayState3D extends State {
 
     PerspectiveCamera camera;

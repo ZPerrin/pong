@@ -5,6 +5,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.zperrin.pong.core.GameManager;
 
+// todo: dispose methods on all the things
 public class Pong extends ApplicationAdapter {
 
     public static final int WIDTH = 500;
