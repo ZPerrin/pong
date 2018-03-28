@@ -32,9 +32,9 @@ public class PlayState2D extends State {
     public void render() {
         modelBatch.begin(camera);
 
-        paddles[0].render();
-        paddles[1].render();
-        ball.render();
+        paddles[0].render(null);
+        paddles[1].render(null);
+        ball.render(null);
 
         modelBatch.end();
     }

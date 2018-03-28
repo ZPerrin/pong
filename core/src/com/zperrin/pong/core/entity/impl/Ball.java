@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.VertexAttributes;
+import com.badlogic.gdx.graphics.g3d.Environment;
 import com.badlogic.gdx.graphics.g3d.Material;
 import com.badlogic.gdx.graphics.g3d.Model;
 import com.badlogic.gdx.graphics.g3d.ModelBatch;
@@ -28,7 +29,7 @@ public class Ball implements IEntity {
     private ModelBatch modelBatch;
     private ModelBuilder modelBuilder = new ModelBuilder(); // todo: refactor?
     private Model model = modelBuilder.createSphere(DIAMETER, DIAMETER, DIAMETER, 10, 10,
-            new Material(ColorAttribute.createDiffuse(Color.WHITE)),
+            new Material(ColorAttribute.createDiffuse(Color.BLUE)),
             VertexAttributes.Usage.Position | VertexAttributes.Usage.Normal);
     private ModelInstance ball;
     private Vector3 position = new Vector3();
@@ -84,14 +85,14 @@ public class Ball implements IEntity {
     }
 
     @Override
-    public void render() {
-        modelBatch.render(ball);
+    public void render(Environment environment) {
+        modelBatch.render(ball, environment);
     }
 
     @Override
-    public void render3D() {
+    public void render3D(Environment environment) {
         // todo: do i need the 3d method?
-        render();
+        render(environment);
     }
 
     // todo: update this

@@ -2,8 +2,8 @@ package com.zperrin.pong.core.entity.impl;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.VertexAttributes;
+import com.badlogic.gdx.graphics.g3d.Environment;
 import com.badlogic.gdx.graphics.g3d.Material;
 import com.badlogic.gdx.graphics.g3d.Model;
 import com.badlogic.gdx.graphics.g3d.ModelBatch;
@@ -31,7 +31,7 @@ public class Paddle implements IEntity {
     private ModelBatch modelBatch;
     private ModelBuilder modelBuilder = new ModelBuilder();
     private Model model = modelBuilder.createBox(WIDTH, HEIGHT, DEPTH,
-            new Material(ColorAttribute.createDiffuse(Color.WHITE)),
+            new Material(ColorAttribute.createDiffuse(1f, 1f, 1f, .1f)),
             VertexAttributes.Usage.Position | VertexAttributes.Usage.Normal);
     private ModelInstance paddle;
     private Vector3 position = new Vector3();
@@ -133,13 +133,13 @@ public class Paddle implements IEntity {
     }
 
     @Override
-    public void render() {
-        modelBatch.render(paddle);
+    public void render(Environment environment) {
+        modelBatch.render(paddle, environment);
     }
 
     @Override
-    public void render3D() {
-
+    public void render3D(Environment environment) {
+        render(environment);
     }
 
     public void dispose() {

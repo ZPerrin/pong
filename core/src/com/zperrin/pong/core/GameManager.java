@@ -36,7 +36,7 @@ public class GameManager {
         ball = new Ball(paddles, modelBatch);
 
         states.push(new PlayState2D(paddles, ball, modelBatch));
-       // states.push(new PlayState3D(paddles, ball));
+        states.push(new PlayState3D(paddles, ball, modelBatch));
     }
 
     public void push(State state) {
